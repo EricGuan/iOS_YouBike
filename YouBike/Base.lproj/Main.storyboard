@@ -9,7 +9,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="YouBike" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="台北UBike情報" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="360" width="600" height="240"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="bikeStop_TableViewCell" id="cnW-es-lGf" customClass="bikeStop_TableViewCell" customModule="YouBike" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="bikeStop_TableViewCell" id="cnW-es-lGf" customClass="bikeStop_TableViewCell" customModule="台北UBike情報" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cnW-es-lGf" id="ZtU-R5-WDn">
@@ -105,17 +105,33 @@
                                 <color key="textColor" red="0.18823529410000001" green="0.21960784310000001" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="開放資訊來源：" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qFg-Uh-3X3">
+                                <rect key="frame" x="536" y="28" width="56" height="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                                <color key="textColor" red="0.18823529410000001" green="0.21960784310000001" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="臺北市政府 Data.Taipei" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7oG-ur-V0k">
+                                <rect key="frame" x="505" y="38" width="87" height="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                                <color key="textColor" red="0.18823529410000001" green="0.21960784310000001" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="c4y-7J-tKy" firstAttribute="top" secondItem="5m7-dI-VJv" secondAttribute="bottom" constant="8" id="9mN-TU-21o"/>
+                            <constraint firstItem="qFg-Uh-3X3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="IPv-9Y-56e"/>
+                            <constraint firstItem="7oG-ur-V0k" firstAttribute="top" secondItem="qFg-Uh-3X3" secondAttribute="bottom" id="JBV-ar-rJO"/>
                             <constraint firstItem="r81-g7-APG" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Jud-vp-wo1"/>
                             <constraint firstItem="r81-g7-APG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QHX-Ed-abc"/>
                             <constraint firstItem="c4y-7J-tKy" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.4" id="Rmc-B2-Yop"/>
                             <constraint firstItem="5m7-dI-VJv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="29" id="XpG-jT-q5v"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="c4y-7J-tKy" secondAttribute="bottom" id="hn8-Y4-J2K"/>
+                            <constraint firstItem="7oG-ur-V0k" firstAttribute="trailing" secondItem="qFg-Uh-3X3" secondAttribute="trailing" id="l4e-ar-Bz4"/>
                             <constraint firstItem="c4y-7J-tKy" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="sXi-N3-6LQ"/>
                             <constraint firstItem="c4y-7J-tKy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v1C-rB-1kB"/>
+                            <constraint firstAttribute="trailing" secondItem="qFg-Uh-3X3" secondAttribute="trailing" constant="8" id="v5e-OX-J3A"/>
                             <constraint firstItem="r81-g7-APG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="wGk-xV-KLn"/>
                             <constraint firstAttribute="trailing" secondItem="5m7-dI-VJv" secondAttribute="trailing" constant="8" id="yQR-QL-rgF"/>
                             <constraint firstItem="r81-g7-APG" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.6" id="z5E-MS-gbn"/>
@@ -134,6 +150,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="263" y="175"/>
         </scene>
     </scenes>
 </document>

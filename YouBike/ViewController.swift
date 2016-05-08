@@ -117,35 +117,40 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
             locationManager.startUpdatingLocation()
+            if initialStart {
+                HUD.show(.LabeledProgress(title: "即時資料加載中", subtitle: "請稍候"))
+                youbikeAPICall { (json) in
+                    self.lastLocationInfo = self.currentLocationInfo
+                    self.lastUpdatetime = NSDate()
+                    self.youbikeJSONtoArray(json)
+                    self.sortArrayByDistance(self.currentLocationInfo!)
+                    self.markDestinationStop(0)
+                    self.updateDistanceLable()
+                    self.initialStart = false
+                    self.bikeStoptableView.reloadData()
+                    self.navigationMapView.alpha = 1
+                    self.bikeStoptableView.alpha = 1
+                    HUD.hide()
+                }
+            }
         }
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         currentLocationInfo = locations[0]
-        initialStart ? lastLocationInfo = currentLocationInfo : ()
-        initialStart ? HUD.show(.LabeledProgress(title: "即時資料加載中", subtitle: "請稍候")) : ()
         initialStart ? () : updateDistanceLable()
-        
-        if initialStart || NSDate().compare(lastUpdatetime!.dateByAddingTimeInterval(timeToUpdateAPI)) == NSComparisonResult.OrderedDescending {
+        if !initialStart && NSDate().compare(lastUpdatetime!.dateByAddingTimeInterval(timeToUpdateAPI)) == NSComparisonResult.OrderedDescending {
             lastUpdatetime = NSDate()
             youbikeAPICall { (json) in
                 self.youbikeJSONtoArray(json)
                 self.sortArrayByDistance(self.currentLocationInfo!)
-                if self.initialStart {
-                    self.markDestinationStop(0)
-                    self.updateDistanceLable()
-                    self.initialStart = false
-                    self.navigationMapView.alpha = 1
-                    self.bikeStoptableView.alpha = 1
-                    HUD.hide()
-                }
                 self.bikeStoptableView.reloadData()
             }
         }
-
-        if currentLocationInfo!.distanceFromLocation(lastLocationInfo!) > distanceToUpdatelocation {
+        if !initialStart && currentLocationInfo!.distanceFromLocation(lastLocationInfo!) > distanceToUpdatelocation {
             lastLocationInfo = currentLocationInfo
             sortArrayByDistance(currentLocationInfo!)
+            markDestinationStop(0)
             bikeStoptableView.reloadData()
         }
     }
@@ -161,7 +166,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         cell.availableBikeLabel.backgroundColor = sortedBikeInfo[indexPath.row].1["availableBike"] == "0" ? UIColor.redColor() : UIColor(red: 0.004, green: 0.839, blue: 0.004, alpha: 1)
         cell.availableSlotLabel.text = sortedBikeInfo[indexPath.row].1["availableSlot"]
         cell.availableSlotLabel.backgroundColor = sortedBikeInfo[indexPath.row].1["availableSlot"] == "0" ? UIColor.redColor() : UIColor.orangeColor()
-        
         return cell
     }
     

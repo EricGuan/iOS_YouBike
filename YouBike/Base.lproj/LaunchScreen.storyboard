@@ -3,6 +3,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -19,7 +21,28 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wVm-Fc-HTn">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchScreenPic" translatesAutoresizingMaskIntoConstraints="NO" id="1Bn-TF-hsM">
+                                        <rect key="frame" x="75" y="-60" width="450" height="450"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="1Bn-TF-hsM" secondAttribute="height" multiplier="1:1" id="jf5-wf-tzC"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="台北市 YouBike 情報 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucf-uK-WAo">
+                                        <rect key="frame" x="166" y="390" width="268" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
+                                        <color key="textColor" red="0.18823529410000001" green="0.21960784310000001" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.51764705882352935" blue="0.043137254901960784" alpha="0.87497306034482758" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="ucf-uK-WAo" firstAttribute="centerX" secondItem="1Bn-TF-hsM" secondAttribute="centerX" id="C64-Rt-WPD"/>
+                                    <constraint firstItem="1Bn-TF-hsM" firstAttribute="centerY" secondItem="wVm-Fc-HTn" secondAttribute="centerY" multiplier="0.55" id="KJa-mJ-TVw"/>
+                                    <constraint firstItem="1Bn-TF-hsM" firstAttribute="centerX" secondItem="wVm-Fc-HTn" secondAttribute="centerX" id="N6e-pk-3x4"/>
+                                    <constraint firstItem="ucf-uK-WAo" firstAttribute="top" secondItem="1Bn-TF-hsM" secondAttribute="bottom" id="aLu-0V-QQv"/>
+                                    <constraint firstItem="1Bn-TF-hsM" firstAttribute="width" secondItem="wVm-Fc-HTn" secondAttribute="width" multiplier="0.75" id="eQk-O4-FS0"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -36,4 +59,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="launchScreenPic" width="188" height="188"/>
+    </resources>
 </document>
