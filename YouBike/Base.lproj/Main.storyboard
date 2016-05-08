@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="YouBike" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,8 +17,120 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c4y-7J-tKy">
+                                <rect key="frame" x="0.0" y="360" width="600" height="240"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="bikeStop_TableViewCell" id="cnW-es-lGf" customClass="bikeStop_TableViewCell" customModule="YouBike" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cnW-es-lGf" id="ZtU-R5-WDn">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="租借站名稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQR-ZR-kr9">
+                                                    <rect key="frame" x="8" y="11" width="330" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                    <color key="textColor" red="0.2274509804" green="0.2784313725" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可借" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVs-nj-7tJ">
+                                                    <rect key="frame" x="354" y="11" width="90" height="21"/>
+                                                    <color key="backgroundColor" red="0.0039215686274509803" green="0.83921568627450982" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="YMg-Na-gQi"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="YMg-Na-gQi"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可放" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNF-QS-Ie6">
+                                                    <rect key="frame" x="460" y="11" width="90" height="21"/>
+                                                    <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="qN8-0y-Bbj"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="qN8-0y-Bbj"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="YNF-QS-Ie6" firstAttribute="centerY" secondItem="wVs-nj-7tJ" secondAttribute="centerY" id="H2g-kV-afc"/>
+                                                <constraint firstItem="dQR-ZR-kr9" firstAttribute="centerY" secondItem="ZtU-R5-WDn" secondAttribute="centerY" id="Irl-8F-Wfd"/>
+                                                <constraint firstItem="YNF-QS-Ie6" firstAttribute="leading" secondItem="wVs-nj-7tJ" secondAttribute="trailing" constant="16" id="NP4-Zo-a6Q"/>
+                                                <constraint firstItem="wVs-nj-7tJ" firstAttribute="centerY" secondItem="dQR-ZR-kr9" secondAttribute="centerY" id="VIN-Zw-xi7"/>
+                                                <constraint firstItem="YNF-QS-Ie6" firstAttribute="width" secondItem="wVs-nj-7tJ" secondAttribute="width" id="qlt-FA-BWz"/>
+                                                <constraint firstItem="wVs-nj-7tJ" firstAttribute="leading" secondItem="dQR-ZR-kr9" secondAttribute="trailing" constant="16" id="tTt-wF-LgY"/>
+                                                <constraint firstItem="dQR-ZR-kr9" firstAttribute="leading" secondItem="ZtU-R5-WDn" secondAttribute="leading" constant="8" id="yVP-5c-3oV"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstItem="dQR-ZR-kr9" firstAttribute="width" secondItem="cnW-es-lGf" secondAttribute="width" multiplier="0.55" id="Ljk-aX-CoX"/>
+                                            <constraint firstItem="wVs-nj-7tJ" firstAttribute="width" secondItem="cnW-es-lGf" secondAttribute="width" multiplier="0.15" id="YX0-ue-GlA"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="availableBikeLabel" destination="wVs-nj-7tJ" id="k6T-KD-yS0"/>
+                                            <outlet property="availableSlotLabel" destination="YNF-QS-Ie6" id="Mhh-uZ-Jlj"/>
+                                            <outlet property="stopNameLabel" destination="dQR-ZR-kr9" id="fjc-gI-hD4"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="RwQ-Pc-vFG"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="xpn-de-tWS"/>
+                                </connections>
+                            </tableView>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r81-g7-APG">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="360"/>
+                            </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5m7-dI-VJv">
+                                <rect key="frame" x="442" y="327" width="150" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="7e3-hU-2Fm"/>
+                                    <constraint firstAttribute="height" constant="25" id="8Y5-0N-fOf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <color key="textColor" red="0.18823529410000001" green="0.21960784310000001" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="c4y-7J-tKy" firstAttribute="top" secondItem="5m7-dI-VJv" secondAttribute="bottom" constant="8" id="9mN-TU-21o"/>
+                            <constraint firstItem="r81-g7-APG" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Jud-vp-wo1"/>
+                            <constraint firstItem="r81-g7-APG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QHX-Ed-abc"/>
+                            <constraint firstItem="c4y-7J-tKy" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.4" id="Rmc-B2-Yop"/>
+                            <constraint firstItem="5m7-dI-VJv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="29" id="XpG-jT-q5v"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="c4y-7J-tKy" secondAttribute="bottom" id="hn8-Y4-J2K"/>
+                            <constraint firstItem="c4y-7J-tKy" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="sXi-N3-6LQ"/>
+                            <constraint firstItem="c4y-7J-tKy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v1C-rB-1kB"/>
+                            <constraint firstItem="r81-g7-APG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="wGk-xV-KLn"/>
+                            <constraint firstAttribute="trailing" secondItem="5m7-dI-VJv" secondAttribute="trailing" constant="8" id="yQR-QL-rgF"/>
+                            <constraint firstItem="r81-g7-APG" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.6" id="z5E-MS-gbn"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="XpG-jT-q5v"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="bikeStoptableView" destination="c4y-7J-tKy" id="3YE-Lb-6cL"/>
+                        <outlet property="distanceLeftLabel" destination="5m7-dI-VJv" id="5Qg-XH-Wnk"/>
+                        <outlet property="navigationMapView" destination="r81-g7-APG" id="Ptp-6x-cWh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

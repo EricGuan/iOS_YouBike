@@ -12,6 +12,10 @@
 		114026511CDE3E5C00452E7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1140264F1CDE3E5C00452E7C /* Main.storyboard */; };
 		114026531CDE3E5C00452E7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 114026521CDE3E5C00452E7C /* Assets.xcassets */; };
 		114026561CDE3E5C00452E7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 114026541CDE3E5C00452E7C /* LaunchScreen.storyboard */; };
+		11C1B0B81CDE3F67007423F9 /* API_Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C1B0B71CDE3F67007423F9 /* API_Call.swift */; };
+		11C1B0BA1CDE42D1007423F9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C1B0B91CDE42D1007423F9 /* MapKit.framework */; };
+		11DDE4A71CDF1E69003F772B /* bikeStop_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DDE4A61CDF1E69003F772B /* bikeStop_TableViewCell.swift */; };
+		1A7C807870471A82C0B7C462 /* Pods_YouBike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64CB5256E75C5E0E6E2AD5D /* Pods_YouBike.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,12 @@
 		114026521CDE3E5C00452E7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		114026551CDE3E5C00452E7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		114026571CDE3E5C00452E7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		11C1B0B71CDE3F67007423F9 /* API_Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API_Call.swift; sourceTree = "<group>"; };
+		11C1B0B91CDE42D1007423F9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		11DDE4A61CDF1E69003F772B /* bikeStop_TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bikeStop_TableViewCell.swift; sourceTree = "<group>"; };
+		41E0223D78F09DA3C1DC14C7 /* Pods-YouBike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YouBike.release.xcconfig"; path = "Pods/Target Support Files/Pods-YouBike/Pods-YouBike.release.xcconfig"; sourceTree = "<group>"; };
+		DA13FE2773B9442D1522DE82 /* Pods-YouBike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YouBike.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YouBike/Pods-YouBike.debug.xcconfig"; sourceTree = "<group>"; };
+		E64CB5256E75C5E0E6E2AD5D /* Pods_YouBike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YouBike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11C1B0BA1CDE42D1007423F9 /* MapKit.framework in Frameworks */,
+				1A7C807870471A82C0B7C462 /* Pods_YouBike.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +52,8 @@
 			children = (
 				1140264A1CDE3E5C00452E7C /* YouBike */,
 				114026491CDE3E5C00452E7C /* Products */,
+				EE886B356B153909758CE7C9 /* Pods */,
+				3A1725CAC3CD0FB113E18208 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,12 +70,32 @@
 			children = (
 				1140264B1CDE3E5C00452E7C /* AppDelegate.swift */,
 				1140264D1CDE3E5C00452E7C /* ViewController.swift */,
+				11DDE4A61CDF1E69003F772B /* bikeStop_TableViewCell.swift */,
+				11C1B0B71CDE3F67007423F9 /* API_Call.swift */,
 				1140264F1CDE3E5C00452E7C /* Main.storyboard */,
 				114026521CDE3E5C00452E7C /* Assets.xcassets */,
 				114026541CDE3E5C00452E7C /* LaunchScreen.storyboard */,
 				114026571CDE3E5C00452E7C /* Info.plist */,
 			);
 			path = YouBike;
+			sourceTree = "<group>";
+		};
+		3A1725CAC3CD0FB113E18208 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				11C1B0B91CDE42D1007423F9 /* MapKit.framework */,
+				E64CB5256E75C5E0E6E2AD5D /* Pods_YouBike.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE886B356B153909758CE7C9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DA13FE2773B9442D1522DE82 /* Pods-YouBike.debug.xcconfig */,
+				41E0223D78F09DA3C1DC14C7 /* Pods-YouBike.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +105,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1140265A1CDE3E5C00452E7C /* Build configuration list for PBXNativeTarget "YouBike" */;
 			buildPhases = (
+				76608957523B118CF2EBDB9A /* 📦 Check Pods Manifest.lock */,
 				114026441CDE3E5C00452E7C /* Sources */,
 				114026451CDE3E5C00452E7C /* Frameworks */,
 				114026461CDE3E5C00452E7C /* Resources */,
+				8CA55D48B145971793B91820 /* 📦 Embed Pods Frameworks */,
+				537CB983935B4E7C74118387 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -130,12 +167,62 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		537CB983935B4E7C74118387 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YouBike/Pods-YouBike-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		76608957523B118CF2EBDB9A /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8CA55D48B145971793B91820 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YouBike/Pods-YouBike-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		114026441CDE3E5C00452E7C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				1140264E1CDE3E5C00452E7C /* ViewController.swift in Sources */,
+				11C1B0B81CDE3F67007423F9 /* API_Call.swift in Sources */,
+				11DDE4A71CDF1E69003F772B /* bikeStop_TableViewCell.swift in Sources */,
 				1140264C1CDE3E5C00452E7C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,6 +336,7 @@
 		};
 		1140265B1CDE3E5C00452E7C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA13FE2773B9442D1522DE82 /* Pods-YouBike.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = YouBike/Info.plist;
@@ -260,6 +348,7 @@
 		};
 		1140265C1CDE3E5C00452E7C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41E0223D78F09DA3C1DC14C7 /* Pods-YouBike.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = YouBike/Info.plist;
@@ -288,6 +377,7 @@
 				1140265C1CDE3E5C00452E7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
