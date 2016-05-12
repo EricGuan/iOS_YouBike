@@ -22,15 +22,20 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let locationManager = CLLocationManager()
     let distanceToUpdatelocation: Double = 100.0
     let timeToUpdateAPI: Double = 60
-    var lastLocationInfo: CLLocation?
-    var currentLocationInfo: CLLocation?
+    let initialLocation: CLLocation = CLLocation(latitude: Double(51.5315118), longitude: Double(-0.2526943))
+    var lastLocationInfo: CLLocation!
+    var currentLocationInfo: CLLocation!
     var lastUpdatetime: NSDate?
     var initialStart: Bool = true
+    var atTaipeiRange: Bool = true
+    var displayedAlert: Bool = false
+    var distanceToTaipeiInRange = 100000
     var bikeInfoArray:[String:[String:String]] = [:]
     var sortedBikeInfo:[(String,[String:String])] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        currentLocationInfo = initialLocation
         
         navigationMapView.alpha = 0
         bikeStoptableView.alpha = 0
@@ -81,12 +86,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         destinationMarker.subtitle = stopName
         destinationMarker.coordinate = CLLocationCoordinate2DMake(lat, lng)
         navigationMapView.addAnnotation(destinationMarker)
-        navigationToBikeStop(CLLocationCoordinate2DMake(lat, lng))
+        atTaipeiRange ? navigationToBikeStop(CLLocationCoordinate2DMake(lat, lng)) : zoomToAnnotation()
+    }
+    
+    func zoomToAnnotation() {
+        navigationMapView.showAnnotations([destinationMarker], animated: true)
     }
     
     func navigationToBikeStop(stopLocation: CLLocationCoordinate2D) {
         let request = MKDirectionsRequest()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocationInfo!.coordinate, addressDictionary: nil))
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocationInfo.coordinate, addressDictionary: nil))
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: stopLocation, addressDictionary: nil))
         request.requestsAlternateRoutes = false
         request.transportType = .Walking
@@ -104,7 +113,19 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func updateDistanceLable() {
-        distanceLeftLabel.text = "距離：\(Int(currentLocationInfo!.distanceFromLocation(CLLocation(latitude: destinationMarker.coordinate.latitude, longitude: destinationMarker.coordinate.longitude))))米"
+        let distance = Int(currentLocationInfo.distanceFromLocation(CLLocation(latitude: destinationMarker.coordinate.latitude, longitude: destinationMarker.coordinate.longitude)))
+        distanceLeftLabel.text = "距離：\(distance)米"
+        if distance > distanceToTaipeiInRange && !displayedAlert {
+            outOfTaipeiAlert()
+            displayedAlert = true
+        }
+    }
+    
+    func outOfTaipeiAlert() {
+        let alert = UIAlertController(title: "溫馨提示", message: "你並沒有位於台北市範圍，但你仍可以查詢各站即時資訊", preferredStyle: .Alert)
+        let ok = UIAlertAction(title: "知道了", style: .Cancel, handler: nil)
+        alert.addAction(ok)
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
@@ -120,10 +141,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             if initialStart {
                 HUD.show(.LabeledProgress(title: "即時資料加載中", subtitle: "請稍候"))
                 youbikeAPICall { (json) in
+                    self.currentLocationInfo == self.initialLocation ? self.atTaipeiRange = false : ()
                     self.lastLocationInfo = self.currentLocationInfo
                     self.lastUpdatetime = NSDate()
                     self.youbikeJSONtoArray(json)
-                    self.sortArrayByDistance(self.currentLocationInfo!)
+                    self.sortArrayByDistance(self.currentLocationInfo)
                     self.markDestinationStop(0)
                     self.updateDistanceLable()
                     self.initialStart = false
@@ -138,18 +160,19 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         currentLocationInfo = locations[0]
+        print(currentLocationInfo)
         initialStart ? () : updateDistanceLable()
         if !initialStart && NSDate().compare(lastUpdatetime!.dateByAddingTimeInterval(timeToUpdateAPI)) == NSComparisonResult.OrderedDescending {
             lastUpdatetime = NSDate()
             youbikeAPICall { (json) in
                 self.youbikeJSONtoArray(json)
-                self.sortArrayByDistance(self.currentLocationInfo!)
+                self.sortArrayByDistance(self.currentLocationInfo)
                 self.bikeStoptableView.reloadData()
             }
         }
-        if !initialStart && currentLocationInfo!.distanceFromLocation(lastLocationInfo!) > distanceToUpdatelocation {
+        if !initialStart && currentLocationInfo.distanceFromLocation(lastLocationInfo) > distanceToUpdatelocation {
             lastLocationInfo = currentLocationInfo
-            sortArrayByDistance(currentLocationInfo!)
+            sortArrayByDistance(currentLocationInfo)
             markDestinationStop(0)
             bikeStoptableView.reloadData()
         }
