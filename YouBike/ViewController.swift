@@ -22,13 +22,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let locationManager = CLLocationManager()
     let distanceToUpdatelocation: Double = 100.0
     let timeToUpdateAPI: Double = 60
-    let initialLocation: CLLocation = CLLocation(latitude: Double(51.5315118), longitude: Double(-0.2526943))
+    let initialLocation: CLLocation = CLLocation(latitude: Double(51.5315118), longitude: Double(-0.2526943)) // very far away's London, dedicated for apple fucking review with simulator that without fucking location enabled...
+    let taipeiLocation: CLLocation = CLLocation(latitude: 25.0856513, longitude: 121.4231615)
     var lastLocationInfo: CLLocation!
     var currentLocationInfo: CLLocation!
     var lastUpdatetime: NSDate?
     var initialStart: Bool = true
     var atTaipeiRange: Bool = true
-    var displayedAlert: Bool = false
     var distanceToTaipeiInRange = 100000
     var bikeInfoArray:[String:[String:String]] = [:]
     var sortedBikeInfo:[(String,[String:String])] = []
@@ -39,7 +39,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         navigationMapView.alpha = 0
         bikeStoptableView.alpha = 0
-        
+
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -112,13 +112,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
+    func distanceMeasure(from: CLLocation, to: CLLocation) -> Int {
+        return Int(from.distanceFromLocation(to))
+    }
+    
     func updateDistanceLable() {
-        let distance = Int(currentLocationInfo.distanceFromLocation(CLLocation(latitude: destinationMarker.coordinate.latitude, longitude: destinationMarker.coordinate.longitude)))
+        let distance = distanceMeasure(currentLocationInfo, to: CLLocation(latitude: destinationMarker.coordinate.latitude, longitude: destinationMarker.coordinate.longitude))
         distanceLeftLabel.text = "距離：\(distance)米"
-        if distance > distanceToTaipeiInRange && !displayedAlert {
-            outOfTaipeiAlert()
-            displayedAlert = true
-        }
     }
     
     func outOfTaipeiAlert() {
@@ -138,22 +138,26 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
             locationManager.startUpdatingLocation()
-            if initialStart {
-                HUD.show(.LabeledProgress(title: "即時資料加載中", subtitle: "請稍候"))
-                youbikeAPICall { (json) in
-                    self.currentLocationInfo == self.initialLocation ? self.atTaipeiRange = false : ()
-                    self.lastLocationInfo = self.currentLocationInfo
-                    self.lastUpdatetime = NSDate()
-                    self.youbikeJSONtoArray(json)
-                    self.sortArrayByDistance(self.currentLocationInfo)
-                    self.markDestinationStop(0)
-                    self.updateDistanceLable()
-                    self.initialStart = false
-                    self.bikeStoptableView.reloadData()
-                    self.navigationMapView.alpha = 1
-                    self.bikeStoptableView.alpha = 1
-                    HUD.hide()
+        }
+        if initialStart {
+            HUD.show(.LabeledProgress(title: "即時資料加載中", subtitle: "請稍候"))
+            youbikeAPICall { (json) in
+                // simulator with no location / actual place out of taipei
+                if self.currentLocationInfo == self.initialLocation || self.distanceMeasure(self.currentLocationInfo, to: self.taipeiLocation) > self.distanceToTaipeiInRange {
+                    self.outOfTaipeiAlert()
+                    self.atTaipeiRange = false
                 }
+                self.lastLocationInfo = self.currentLocationInfo
+                self.lastUpdatetime = NSDate()
+                self.youbikeJSONtoArray(json)
+                self.sortArrayByDistance(self.currentLocationInfo)
+                self.markDestinationStop(0)
+                self.updateDistanceLable()
+                self.initialStart = false
+                self.bikeStoptableView.reloadData()
+                self.navigationMapView.alpha = 1
+                self.bikeStoptableView.alpha = 1
+                HUD.hide()
             }
         }
     }
