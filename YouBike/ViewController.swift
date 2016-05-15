@@ -22,7 +22,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let locationManager = CLLocationManager()
     let distanceToUpdatelocation: Double = 100.0
     let timeToUpdateAPI: Double = 60
-    let initialLocation: CLLocation = CLLocation(latitude: Double(51.5315118), longitude: Double(-0.2526943)) // very far away's London, dedicated for apple fucking review with simulator that without fucking location enabled...
+    let initialLocation: CLLocation = CLLocation(latitude: Double(51.5315118), longitude: Double(-0.2526943)) // very far away's London, dedicated for apple fucking review with simulator that without fucking location enabled or enabled with no fucking actual location provided.
     let taipeiLocation: CLLocation = CLLocation(latitude: 25.0856513, longitude: 121.4231615)
     var lastLocationInfo: CLLocation!
     var currentLocationInfo: CLLocation!
@@ -46,19 +46,39 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         navigationMapView.delegate = self
     }
     
-    func youbikeAPICall(completion: (json: JSON) -> Void) {
-        dataTaipeiYouBikeAPICall { (result) in
-            completion(json: JSON(result))
+    func youbikeAPICall(completion: (taipeiResult: JSON, newtaipeiResult: JSON) -> Void) {
+        dataTaipeiYouBikeAPICall { (taipeiResult) in
+            newTaipeiYouBikeAPICall({ (newtaipeiResult) in
+                completion(taipeiResult: JSON(taipeiResult), newtaipeiResult: JSON(newtaipeiResult))
+            })
         }
     }
     
-    func youbikeJSONtoArray(jsonResult: JSON) {
+    func taipeiYoubikeJSONtoArray(jsonResult: JSON) {
         for (key, subJson) in jsonResult["retVal"] {
             let stopName = subJson["sna"].stringValue
             let availableBike = subJson["sbi"].stringValue
             let availableSlot = subJson["bemp"].stringValue
             let lat = subJson["lat"].stringValue
             let lng = subJson["lng"].stringValue
+            if initialStart {
+                self.bikeInfoArray[key] = ["stopName":stopName, "availableBike":availableBike, "availableSlot":availableSlot, "lat":lat, "lng":lng, "distanceFromYou":""]
+            } else {
+                self.bikeInfoArray[key]!["availableBike"] = availableBike
+                self.bikeInfoArray[key]!["availableSlot"] = availableSlot
+            }
+        }
+    }
+    
+    func newtaipeiYoubikeJSONtoArray(jsonResult: JSON) {
+        let records = jsonResult.arrayValue
+        for record in records {
+            let key = record["sno"].stringValue
+            let stopName = record["sna"].stringValue
+            let availableBike = record["sbi"].stringValue
+            let availableSlot = record["bemp"].stringValue
+            let lat = record["lat"].stringValue
+            let lng = record["lng"].stringValue
             if initialStart {
                 self.bikeInfoArray[key] = ["stopName":stopName, "availableBike":availableBike, "availableSlot":availableSlot, "lat":lat, "lng":lng, "distanceFromYou":""]
             } else {
@@ -122,7 +142,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func outOfTaipeiAlert() {
-        let alert = UIAlertController(title: "溫馨提示", message: "你並沒有位於台北市範圍，但你仍可以查詢各站即時資訊", preferredStyle: .Alert)
+        let alert = UIAlertController(title: "溫馨提示", message: "你並沒有位於台北/新北市範圍，但你仍可以查詢各站即時資訊", preferredStyle: .Alert)
         let ok = UIAlertAction(title: "知道了", style: .Cancel, handler: nil)
         alert.addAction(ok)
         self.presentViewController(alert, animated: true, completion: nil)
@@ -141,7 +161,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
         if initialStart {
             HUD.show(.LabeledProgress(title: "即時資料加載中", subtitle: "請稍候"))
-            youbikeAPICall { (json) in
+            youbikeAPICall { (taipeiResult, newtaipeiResult) in
                 // simulator with no location / actual place out of taipei
                 if self.currentLocationInfo == self.initialLocation || self.distanceMeasure(self.currentLocationInfo, to: self.taipeiLocation) > self.distanceToTaipeiInRange {
                     self.outOfTaipeiAlert()
@@ -149,7 +169,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 }
                 self.lastLocationInfo = self.currentLocationInfo
                 self.lastUpdatetime = NSDate()
-                self.youbikeJSONtoArray(json)
+                self.taipeiYoubikeJSONtoArray(taipeiResult)
+                self.newtaipeiYoubikeJSONtoArray(newtaipeiResult)
                 self.sortArrayByDistance(self.currentLocationInfo)
                 self.markDestinationStop(0)
                 self.updateDistanceLable()
@@ -168,8 +189,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         initialStart ? () : updateDistanceLable()
         if !initialStart && NSDate().compare(lastUpdatetime!.dateByAddingTimeInterval(timeToUpdateAPI)) == NSComparisonResult.OrderedDescending {
             lastUpdatetime = NSDate()
-            youbikeAPICall { (json) in
-                self.youbikeJSONtoArray(json)
+            youbikeAPICall { (taipeiResult, newtaipeiResult) in
+                self.taipeiYoubikeJSONtoArray(taipeiResult)
+                self.newtaipeiYoubikeJSONtoArray(newtaipeiResult)
                 self.sortArrayByDistance(self.currentLocationInfo)
                 self.bikeStoptableView.reloadData()
             }
