@@ -17,6 +17,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     @IBOutlet weak var navigationMapView: MKMapView!
     @IBOutlet weak var bikeStoptableView: UITableView!
+    @IBOutlet weak var headerTipsView: UIView!
     @IBOutlet weak var distanceLeftLabel: UILabel!
     var destinationMarker = MKPointAnnotation()
     let locationManager = CLLocationManager()
@@ -39,6 +40,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         navigationMapView.alpha = 0
         bikeStoptableView.alpha = 0
+        headerTipsView.alpha = 0
 
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
@@ -178,6 +180,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 self.bikeStoptableView.reloadData()
                 self.navigationMapView.alpha = 1
                 self.bikeStoptableView.alpha = 1
+                self.headerTipsView.alpha = 1
                 HUD.hide()
             }
         }
@@ -185,7 +188,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         currentLocationInfo = locations[0]
-        print(currentLocationInfo)
         initialStart ? () : updateDistanceLable()
         if !initialStart && NSDate().compare(lastUpdatetime!.dateByAddingTimeInterval(timeToUpdateAPI)) == NSComparisonResult.OrderedDescending {
             lastUpdatetime = NSDate()

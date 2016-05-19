@@ -12,6 +12,7 @@
 		114026511CDE3E5C00452E7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1140264F1CDE3E5C00452E7C /* Main.storyboard */; };
 		114026531CDE3E5C00452E7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 114026521CDE3E5C00452E7C /* Assets.xcassets */; };
 		114026561CDE3E5C00452E7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 114026541CDE3E5C00452E7C /* LaunchScreen.storyboard */; };
+		11A48BB41CE829CC00322181 /* ALPHACamp.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 11A48BB31CE829CC00322181 /* ALPHACamp.gpx */; };
 		11C1B0B81CDE3F67007423F9 /* API_Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C1B0B71CDE3F67007423F9 /* API_Call.swift */; };
 		11C1B0BA1CDE42D1007423F9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C1B0B91CDE42D1007423F9 /* MapKit.framework */; };
 		11DAB38E1CDF7AF30088EA41 /* DaanPark.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 11DAB38D1CDF7AF30088EA41 /* DaanPark.gpx */; };
@@ -27,6 +28,7 @@
 		114026521CDE3E5C00452E7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		114026551CDE3E5C00452E7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		114026571CDE3E5C00452E7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		11A48BB31CE829CC00322181 /* ALPHACamp.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ALPHACamp.gpx; sourceTree = "<group>"; };
 		11C1B0B71CDE3F67007423F9 /* API_Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API_Call.swift; sourceTree = "<group>"; };
 		11C1B0B91CDE42D1007423F9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		11DAB38D1CDF7AF30088EA41 /* DaanPark.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DaanPark.gpx; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				11C1B0B71CDE3F67007423F9 /* API_Call.swift */,
 				1140264F1CDE3E5C00452E7C /* Main.storyboard */,
 				11DAB38D1CDF7AF30088EA41 /* DaanPark.gpx */,
+				11A48BB31CE829CC00322181 /* ALPHACamp.gpx */,
 				114026521CDE3E5C00452E7C /* Assets.xcassets */,
 				114026541CDE3E5C00452E7C /* LaunchScreen.storyboard */,
 				114026571CDE3E5C00452E7C /* Info.plist */,
@@ -165,6 +168,7 @@
 			files = (
 				114026561CDE3E5C00452E7C /* LaunchScreen.storyboard in Resources */,
 				114026531CDE3E5C00452E7C /* Assets.xcassets in Resources */,
+				11A48BB41CE829CC00322181 /* ALPHACamp.gpx in Resources */,
 				114026511CDE3E5C00452E7C /* Main.storyboard in Resources */,
 				11DAB38E1CDF7AF30088EA41 /* DaanPark.gpx in Resources */,
 			);
