@@ -33,6 +33,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var distanceToTaipeiInRange = 100000
     var bikeInfoArray:[String:[String:String]] = [:]
     var sortedBikeInfo:[(String,[String:String])] = []
+    var taipeiFailed, newtaipeiFailed: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +52,20 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func youbikeAPICall(completion: (taipeiResult: JSON, newtaipeiResult: JSON) -> Void) {
         dataTaipeiYouBikeAPICall { (taipeiResult) in
             newTaipeiYouBikeAPICall({ (newtaipeiResult) in
+                self.taipeiFailed = taipeiResult as! NSObject == false
+                self.newtaipeiFailed = newtaipeiResult as! NSObject == false
                 completion(taipeiResult: JSON(taipeiResult), newtaipeiResult: JSON(newtaipeiResult))
             })
+        }
+    }
+    
+    func alertToUser() {
+        if let taipei = taipeiFailed, newtaipei = newtaipeiFailed {
+            let message = "\(taipei && newtaipei ? "台北市與新北市" : (taipei ? "台北市" : (newtaipei ? "新北市" : "")))即時資訊未能提取，\((newtaipei && !taipei) ? "但你仍可查詢台北市即時資訊" : "請檢查網絡。如網絡沒有問題，則為開放資料網站出現錯誤，請稍候再嘗試")"
+            let alertController = UIAlertController(title: "發生錯誤", message: message, preferredStyle: .Alert)
+            let alertAction = UIAlertAction(title: "知道了", style: .Default, handler: nil)
+            alertController.addAction(alertAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
     
@@ -164,24 +177,30 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         if initialStart {
             HUD.show(.LabeledProgress(title: "即時資料加載中", subtitle: "請稍候"))
             youbikeAPICall { (taipeiResult, newtaipeiResult) in
-                // simulator with no location / actual place out of taipei
-                if self.currentLocationInfo == self.initialLocation || self.distanceMeasure(self.currentLocationInfo, to: self.taipeiLocation) > self.distanceToTaipeiInRange {
-                    self.outOfTaipeiAlert()
-                    self.atTaipeiRange = false
+                if self.taipeiFailed || self.newtaipeiFailed {
+                    HUD.hide()
+                    self.alertToUser()
                 }
-                self.lastLocationInfo = self.currentLocationInfo
-                self.lastUpdatetime = NSDate()
-                self.taipeiYoubikeJSONtoArray(taipeiResult)
-                self.newtaipeiYoubikeJSONtoArray(newtaipeiResult)
-                self.sortArrayByDistance(self.currentLocationInfo)
-                self.markDestinationStop(0)
-                self.updateDistanceLable()
-                self.initialStart = false
-                self.bikeStoptableView.reloadData()
-                self.navigationMapView.alpha = 1
-                self.bikeStoptableView.alpha = 1
-                self.headerTipsView.alpha = 1
-                HUD.hide()
+                if !self.taipeiFailed {
+                    // simulator with no location / actual place out of taipei
+                    if self.currentLocationInfo == self.initialLocation || self.distanceMeasure(self.currentLocationInfo, to: self.taipeiLocation) > self.distanceToTaipeiInRange {
+                        self.outOfTaipeiAlert()
+                        self.atTaipeiRange = false
+                    }
+                    self.lastLocationInfo = self.currentLocationInfo
+                    self.lastUpdatetime = NSDate()
+                    self.taipeiYoubikeJSONtoArray(taipeiResult)
+                    !self.newtaipeiFailed ? self.newtaipeiYoubikeJSONtoArray(newtaipeiResult) : ()
+                    self.sortArrayByDistance(self.currentLocationInfo)
+                    self.markDestinationStop(0)
+                    self.updateDistanceLable()
+                    self.initialStart = false
+                    self.bikeStoptableView.reloadData()
+                    self.navigationMapView.alpha = 1
+                    self.bikeStoptableView.alpha = 1
+                    self.headerTipsView.alpha = 1
+                    HUD.hide()
+                }
             }
         }
     }
@@ -192,10 +211,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         if !initialStart && NSDate().compare(lastUpdatetime!.dateByAddingTimeInterval(timeToUpdateAPI)) == NSComparisonResult.OrderedDescending {
             lastUpdatetime = NSDate()
             youbikeAPICall { (taipeiResult, newtaipeiResult) in
-                self.taipeiYoubikeJSONtoArray(taipeiResult)
-                self.newtaipeiYoubikeJSONtoArray(newtaipeiResult)
-                self.sortArrayByDistance(self.currentLocationInfo)
-                self.bikeStoptableView.reloadData()
+                if self.taipeiFailed || self.newtaipeiFailed {
+                    self.alertToUser()
+                }
+                if !self.taipeiFailed {
+                    self.taipeiYoubikeJSONtoArray(taipeiResult)
+                    !self.newtaipeiFailed ? self.newtaipeiYoubikeJSONtoArray(newtaipeiResult) : ()
+                    self.sortArrayByDistance(self.currentLocationInfo)
+                    self.bikeStoptableView.reloadData()
+                }
             }
         }
         if !initialStart && currentLocationInfo.distanceFromLocation(lastLocationInfo) > distanceToUpdatelocation {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -36,7 +35,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可借" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVs-nj-7tJ">
-                                                    <rect key="frame" x="354" y="11" width="90" height="21"/>
+                                                    <rect key="frame" x="388" y="11" width="90" height="21"/>
                                                     <color key="backgroundColor" red="0.0039215686274509803" green="0.83921568627450982" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="YMg-Na-gQi"/>
@@ -51,7 +50,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可還" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNF-QS-Ie6">
-                                                    <rect key="frame" x="460" y="11" width="90" height="21"/>
+                                                    <rect key="frame" x="494" y="11" width="90" height="21"/>
                                                     <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="qN8-0y-Bbj"/>
@@ -67,6 +66,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="YNF-QS-Ie6" secondAttribute="trailing" constant="16" id="9Gm-UY-dCV"/>
                                                 <constraint firstItem="YNF-QS-Ie6" firstAttribute="centerY" secondItem="wVs-nj-7tJ" secondAttribute="centerY" id="H2g-kV-afc"/>
                                                 <constraint firstItem="dQR-ZR-kr9" firstAttribute="centerY" secondItem="ZtU-R5-WDn" secondAttribute="centerY" id="Irl-8F-Wfd"/>
                                                 <constraint firstItem="YNF-QS-Ie6" firstAttribute="leading" secondItem="wVs-nj-7tJ" secondAttribute="trailing" constant="16" id="NP4-Zo-a6Q"/>
@@ -75,6 +75,11 @@
                                                 <constraint firstItem="wVs-nj-7tJ" firstAttribute="leading" secondItem="dQR-ZR-kr9" secondAttribute="trailing" constant="16" id="tTt-wF-LgY"/>
                                                 <constraint firstItem="dQR-ZR-kr9" firstAttribute="leading" secondItem="ZtU-R5-WDn" secondAttribute="leading" constant="8" id="yVP-5c-3oV"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="tTt-wF-LgY"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <constraints>
                                             <constraint firstItem="dQR-ZR-kr9" firstAttribute="width" secondItem="cnW-es-lGf" secondAttribute="width" multiplier="0.55" id="Ljk-aX-CoX"/>
@@ -133,13 +138,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可借" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vr7-MU-Lry">
-                                        <rect key="frame" x="354" y="2" width="90" height="16"/>
+                                        <rect key="frame" x="388" y="2" width="90" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0039215686269999999" green="0.83921568629999999" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可還" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GyH-Vr-UH6">
-                                        <rect key="frame" x="460" y="2" width="90" height="16"/>
+                                        <rect key="frame" x="494" y="2" width="90" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -148,6 +153,7 @@
                                 <color key="backgroundColor" red="0.97536057692307687" green="0.97536057692307687" blue="0.97536057692307687" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="Vr7-MU-Lry" firstAttribute="leading" secondItem="oYI-4E-DSp" secondAttribute="trailing" constant="16" id="AFX-DB-jjK"/>
+                                    <constraint firstAttribute="trailing" secondItem="GyH-Vr-UH6" secondAttribute="trailing" constant="16" id="FaW-do-O6S"/>
                                     <constraint firstItem="GyH-Vr-UH6" firstAttribute="centerY" secondItem="Vr7-MU-Lry" secondAttribute="centerY" id="GXB-IT-VQS"/>
                                     <constraint firstItem="Vr7-MU-Lry" firstAttribute="width" secondItem="KhP-Ic-UBo" secondAttribute="width" multiplier="0.15" id="VKC-hW-bhY"/>
                                     <constraint firstItem="oYI-4E-DSp" firstAttribute="width" secondItem="KhP-Ic-UBo" secondAttribute="width" multiplier="0.55" id="dhe-ZF-Ii9"/>
@@ -158,6 +164,11 @@
                                     <constraint firstAttribute="height" constant="20" id="uKu-Sh-PMX"/>
                                     <constraint firstItem="oYI-4E-DSp" firstAttribute="centerY" secondItem="KhP-Ic-UBo" secondAttribute="centerY" id="xjG-sV-6JC"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="AFX-DB-jjK"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

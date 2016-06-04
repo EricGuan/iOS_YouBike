@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9D4FE05EE39354A0B96AE5760307CE5E"
-               BuildableName = "Pods_YouBike.framework"
-               BlueprintName = "Pods-YouBike"
+               BlueprintIdentifier = "977D3DC2CB1B52976A57CE4EBC2DC107"
+               BuildableName = "Pods___UBike__.framework"
+               BlueprintName = "Pods-&#x53f0;&#x5317;UBike&#x60c5;&#x5831;"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9D4FE05EE39354A0B96AE5760307CE5E"
-            BuildableName = "Pods_YouBike.framework"
-            BlueprintName = "Pods-YouBike"
+            BlueprintIdentifier = "977D3DC2CB1B52976A57CE4EBC2DC107"
+            BuildableName = "Pods___UBike__.framework"
+            BlueprintName = "Pods-&#x53f0;&#x5317;UBike&#x60c5;&#x5831;"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
