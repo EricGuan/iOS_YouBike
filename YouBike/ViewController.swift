@@ -23,17 +23,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let locationManager = CLLocationManager()
     let distanceToUpdatelocation: Double = 100.0
     let timeToUpdateAPI: Double = 60
-    let initialLocation: CLLocation = CLLocation(latitude: Double(51.5315118), longitude: Double(-0.2526943)) // very far away's London, dedicated for apple fucking review with simulator that without fucking location enabled or enabled with no fucking actual location provided.
-    let taipeiLocation: CLLocation = CLLocation(latitude: 25.0856513, longitude: 121.4231615)
+    let initialLocation: CLLocation = CLLocation(latitude: Double(51.5315118), longitude: Double(-0.2526943)) // very far away's London
     var lastLocationInfo: CLLocation!
     var currentLocationInfo: CLLocation!
     var lastUpdatetime: NSDate?
     var initialStart: Bool = true
-    var atTaipeiRange: Bool = true
-    var distanceToTaipeiInRange = 100000
-    var bikeInfoArray:[String:[String:String]] = [:]
-    var sortedBikeInfo:[(String,[String:String])] = []
-    var taipeiFailed, newtaipeiFailed: Bool!
+    var atYouBikeRange: Bool = true
+    var distanceToYouBikeInRange = 100000
+    
+    let APICall = APIManager()
+    var stopInfoResult:[StopInfo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,84 +43,33 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         headerTipsView.alpha = 0
 
         locationManager.requestWhenInUseAuthorization()
-        locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.delegate = self
         navigationMapView.delegate = self
     }
     
-    func youbikeAPICall(completion: (taipeiResult: JSON, newtaipeiResult: JSON) -> Void) {
-        dataTaipeiYouBikeAPICall { (taipeiResult) in
-            newTaipeiYouBikeAPICall({ (newtaipeiResult) in
-                self.taipeiFailed = taipeiResult as! NSObject == false
-                self.newtaipeiFailed = newtaipeiResult as! NSObject == false
-                completion(taipeiResult: JSON(taipeiResult), newtaipeiResult: JSON(newtaipeiResult))
-            })
+    func alertToUser(failedDistrict: [String]) {
+        var failedString:String = ""
+        for district in failedDistrict {
+            failedString += "\(district)"
+            failedDistrict.last != district ? failedString += "、" : ()
         }
-    }
-    
-    func alertToUser() {
-        if let taipei = taipeiFailed, newtaipei = newtaipeiFailed {
-            let message = "\(taipei && newtaipei ? "台北市與新北市" : (taipei ? "台北市" : (newtaipei ? "新北市" : "")))即時資訊未能提取，\((newtaipei && !taipei) ? "但你仍可查詢台北市即時資訊" : "請檢查網絡。如網絡沒有問題，則為開放資料網站出現錯誤，請稍候再嘗試")"
-            let alertController = UIAlertController(title: "發生錯誤", message: message, preferredStyle: .Alert)
-            let alertAction = UIAlertAction(title: "知道了", style: .Default, handler: nil)
-            alertController.addAction(alertAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    func taipeiYoubikeJSONtoArray(jsonResult: JSON) {
-        for (key, subJson) in jsonResult["retVal"] {
-            let stopName = subJson["sna"].stringValue
-            let availableBike = subJson["sbi"].stringValue
-            let availableSlot = subJson["bemp"].stringValue
-            let lat = subJson["lat"].stringValue
-            let lng = subJson["lng"].stringValue
-            if initialStart {
-                self.bikeInfoArray[key] = ["stopName":stopName, "availableBike":availableBike, "availableSlot":availableSlot, "lat":lat, "lng":lng, "distanceFromYou":""]
-            } else {
-                self.bikeInfoArray[key]!["availableBike"] = availableBike
-                self.bikeInfoArray[key]!["availableSlot"] = availableSlot
-            }
-        }
-    }
-    
-    func newtaipeiYoubikeJSONtoArray(jsonResult: JSON) {
-        let records = jsonResult.arrayValue
-        for record in records {
-            let key = record["sno"].stringValue
-            let stopName = record["sna"].stringValue
-            let availableBike = record["sbi"].stringValue
-            let availableSlot = record["bemp"].stringValue
-            let lat = record["lat"].stringValue
-            let lng = record["lng"].stringValue
-            if initialStart {
-                self.bikeInfoArray[key] = ["stopName":stopName, "availableBike":availableBike, "availableSlot":availableSlot, "lat":lat, "lng":lng, "distanceFromYou":""]
-            } else {
-                self.bikeInfoArray[key]!["availableBike"] = availableBike
-                self.bikeInfoArray[key]!["availableSlot"] = availableSlot
-            }
-        }
-    }
-    
-    func sortArrayByDistance(sourceLocation: CLLocation) {
-        for loop in bikeInfoArray {
-            let stopLocation = CLLocation(latitude: Double(loop.1["lat"]!)!, longitude: Double(loop.1["lng"]!)!)
-            bikeInfoArray[loop.0]!["distanceFromYou"] = String(stopLocation.distanceFromLocation(sourceLocation))
-        }
-        sortedBikeInfo = bikeInfoArray.sort({Double($0.1["distanceFromYou"]!)! < Double($1.1["distanceFromYou"]!)!})
+        let alertController = UIAlertController(title: "發生錯誤", message: "\(failedString)即時資訊未能提取，但你仍可查詢其他地方即時資訊。\n請檢查網絡。如網絡沒有問題，則為開放資料網站出現錯誤，請稍候再嘗試", preferredStyle: .Alert)
+        let alertAction = UIAlertAction(title: "知道了", style: .Default, handler: nil)
+        alertController.addAction(alertAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     func markDestinationStop(position: Int) {
-        let lat = Double(sortedBikeInfo[position].1["lat"]!)!
-        let lng = Double(sortedBikeInfo[position].1["lng"]!)!
-        let stopName = sortedBikeInfo[position].1["stopName"]
-        let availableBike = sortedBikeInfo[position].1["availableBike"]!
-        let availableSlot = sortedBikeInfo[position].1["availableSlot"]!
+        let stopName = stopInfoResult[position].stopName
+        let coordinate = stopInfoResult[position].coordinate
+        let availableBike = stopInfoResult[position].availableBike
+        let availableSlot = stopInfoResult[position].availableSlot
         destinationMarker.title = "可借: \(availableBike) 可還: \(availableSlot)"
         destinationMarker.subtitle = stopName
-        destinationMarker.coordinate = CLLocationCoordinate2DMake(lat, lng)
+        destinationMarker.coordinate = coordinate
         navigationMapView.addAnnotation(destinationMarker)
-        atTaipeiRange ? navigationToBikeStop(CLLocationCoordinate2DMake(lat, lng)) : zoomToAnnotation()
+        atYouBikeRange ? navigationToBikeStop(coordinate) : zoomToAnnotation()
     }
     
     func zoomToAnnotation() {
@@ -147,17 +95,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
-    func distanceMeasure(from: CLLocation, to: CLLocation) -> Int {
-        return Int(from.distanceFromLocation(to))
-    }
-    
     func updateDistanceLable() {
-        let distance = distanceMeasure(currentLocationInfo, to: CLLocation(latitude: destinationMarker.coordinate.latitude, longitude: destinationMarker.coordinate.longitude))
+        let distance = APICall.distanceMeasure(currentLocationInfo.coordinate, to: destinationMarker.coordinate)
         distanceLeftLabel.text = "距離：\(distance)米"
     }
     
-    func outOfTaipeiAlert() {
-        let alert = UIAlertController(title: "溫馨提示", message: "你並沒有位於台北/新北市範圍，但你仍可以查詢各站即時資訊", preferredStyle: .Alert)
+    func outOfAreaAlert() {
+        let alert = UIAlertController(title: "溫馨提示", message: "你並沒有位於YouBike站點範圍，但你仍可以查詢各站即時資訊", preferredStyle: .Alert)
         let ok = UIAlertAction(title: "知道了", style: .Cancel, handler: nil)
         alert.addAction(ok)
         self.presentViewController(alert, animated: true, completion: nil)
@@ -176,22 +120,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
         if initialStart {
             HUD.show(.LabeledProgress(title: "即時資料加載中", subtitle: "請稍候"))
-            youbikeAPICall { (taipeiResult, newtaipeiResult) in
-                if self.taipeiFailed || self.newtaipeiFailed {
-                    HUD.hide()
-                    self.alertToUser()
-                }
-                if !self.taipeiFailed {
+            APICall.setCurrentLocation(currentLocationInfo.coordinate)
+            APICall.getAllStopInfo { (result, failedDistrict) in
+                self.stopInfoResult = result.sort { $0.distanceFromYou < $1.distanceFromYou }
+                failedDistrict.count > 0 ? self.alertToUser(failedDistrict) : ()
+                if self.stopInfoResult.count > 0 {
                     // simulator with no location / actual place out of taipei
-                    if self.currentLocationInfo == self.initialLocation || self.distanceMeasure(self.currentLocationInfo, to: self.taipeiLocation) > self.distanceToTaipeiInRange {
-                        self.outOfTaipeiAlert()
-                        self.atTaipeiRange = false
+                    if self.currentLocationInfo == self.initialLocation || self.APICall.distanceMeasure(self.currentLocationInfo.coordinate, to: self.stopInfoResult[0].coordinate) > self.distanceToYouBikeInRange {
+                        self.outOfAreaAlert()
+                        self.atYouBikeRange = false
                     }
                     self.lastLocationInfo = self.currentLocationInfo
                     self.lastUpdatetime = NSDate()
-                    self.taipeiYoubikeJSONtoArray(taipeiResult)
-                    !self.newtaipeiFailed ? self.newtaipeiYoubikeJSONtoArray(newtaipeiResult) : ()
-                    self.sortArrayByDistance(self.currentLocationInfo)
                     self.markDestinationStop(0)
                     self.updateDistanceLable()
                     self.initialStart = false
@@ -210,37 +150,34 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         initialStart ? () : updateDistanceLable()
         if !initialStart && NSDate().compare(lastUpdatetime!.dateByAddingTimeInterval(timeToUpdateAPI)) == NSComparisonResult.OrderedDescending {
             lastUpdatetime = NSDate()
-            youbikeAPICall { (taipeiResult, newtaipeiResult) in
-                if self.taipeiFailed || self.newtaipeiFailed {
-                    self.alertToUser()
-                }
-                if !self.taipeiFailed {
-                    self.taipeiYoubikeJSONtoArray(taipeiResult)
-                    !self.newtaipeiFailed ? self.newtaipeiYoubikeJSONtoArray(newtaipeiResult) : ()
-                    self.sortArrayByDistance(self.currentLocationInfo)
-                    self.bikeStoptableView.reloadData()
-                }
+            APICall.setCurrentLocation(currentLocationInfo.coordinate)
+            APICall.getAllStopInfo { (result, failedDistrict) in
+                self.stopInfoResult = result.sort { $0.distanceFromYou < $1.distanceFromYou }
+                failedDistrict.count > 0 ? self.alertToUser(failedDistrict) : ()
             }
         }
         if !initialStart && currentLocationInfo.distanceFromLocation(lastLocationInfo) > distanceToUpdatelocation {
             lastLocationInfo = currentLocationInfo
-            sortArrayByDistance(currentLocationInfo)
+            recalculateDistance(currentLocationInfo)
             markDestinationStop(0)
             bikeStoptableView.reloadData()
         }
     }
     
+    func recalculateDistance(updatedLocation:CLLocation) {
+        for each in stopInfoResult {
+            each.distanceFromYou = APICall.distanceMeasure(updatedLocation.coordinate, to: each.coordinate)
+        }
+        stopInfoResult = stopInfoResult.sort { $0.distanceFromYou < $1.distanceFromYou }
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sortedBikeInfo.count
+        return stopInfoResult.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("bikeStop_TableViewCell") as! bikeStop_TableViewCell
-        cell.stopNameLabel.text = sortedBikeInfo[indexPath.row].1["stopName"]
-        cell.availableBikeLabel.text = sortedBikeInfo[indexPath.row].1["availableBike"]
-        cell.availableBikeLabel.backgroundColor = sortedBikeInfo[indexPath.row].1["availableBike"] == "0" ? UIColor.redColor() : UIColor(red: 0.004, green: 0.839, blue: 0.004, alpha: 1)
-        cell.availableSlotLabel.text = sortedBikeInfo[indexPath.row].1["availableSlot"]
-        cell.availableSlotLabel.backgroundColor = sortedBikeInfo[indexPath.row].1["availableSlot"] == "0" ? UIColor.redColor() : UIColor.orangeColor()
+        cell.initWithData(stopInfoResult[indexPath.row])
         return cell
     }
     

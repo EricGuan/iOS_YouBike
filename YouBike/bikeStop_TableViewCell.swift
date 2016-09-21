@@ -21,6 +21,14 @@ class bikeStop_TableViewCell: UITableViewCell {
         availableSlotLabel.layer.masksToBounds = true
     }
 
+    func initWithData(stopInfo: StopInfo) {
+        stopNameLabel.text = stopInfo.stopName
+        availableBikeLabel.text = String(stopInfo.availableBike!)
+        availableBikeLabel.backgroundColor = stopInfo.availableBike == 0 ? UIColor.redColor() : UIColor(red: 0.004, green: 0.839, blue: 0.004, alpha: 1)
+        availableSlotLabel.text = String(stopInfo.availableSlot!)
+        availableSlotLabel.backgroundColor = stopInfo.availableSlot == 0 ? UIColor.redColor() : UIColor.orangeColor()
+    }
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
